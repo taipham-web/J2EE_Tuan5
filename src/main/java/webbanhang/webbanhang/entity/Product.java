@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "products")
+@Table(name = "product")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,24 +24,16 @@ public class Product {
     @Column(name = "name")
     private String name;
     
+    @Column(name = "image")
+    private String image;
+    
     @NotNull(message = "Vui lòng nhập giá sản phẩm")
     @DecimalMin(value = "1", inclusive = true, message = "Giá sản phẩm phải từ 1 trở lên")
     @DecimalMax(value = "9999999", inclusive = true, message = "Giá sản phẩm không được vượt quá 9,999,999")
     @Column(name = "price")
     private BigDecimal price;
     
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
-    
-    @Column(name = "short_description")
-    private String shortDescription;
-    
-    @Column(name = "image_url")
-    private String imageUrl;
-    
-    @Column(name = "brand")
-    private String brand;
-    
-    @Column(name = "category_name")
-    private String categoryName;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

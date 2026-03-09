@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import webbanhang.webbanhang.entity.Category;
 import webbanhang.webbanhang.entity.Product;
 import webbanhang.webbanhang.service.CategoryService;
 import webbanhang.webbanhang.service.ProductService;
@@ -46,10 +47,17 @@ public class ProductController {
     
     // Xử lý thêm sản phẩm
     @PostMapping
-    public String createProduct(@Valid @ModelAttribute("product") Product product, BindingResult result, Model model) {
+    public String createProduct(@Valid @ModelAttribute("product") Product product,
+                                BindingResult result,
+                                @RequestParam(value = "categoryId", required = false) Long categoryId,
+                                Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categories", categoryService.getAllCategories());
             return "products/form";
+        }
+        if (categoryId != null) {
+            Category category = categoryService.getCategoryById(categoryId);
+            product.setCategory(category);
         }
         productService.saveProduct(product);
         return "redirect:/products";
@@ -67,13 +75,21 @@ public class ProductController {
     
     // Xử lý cập nhật sản phẩm
     @PostMapping("/update/{id}")
-    public String updateProduct(@PathVariable Long id, @Valid @ModelAttribute("product") Product product, BindingResult result, Model model) {
+    public String updateProduct(@PathVariable Long id,
+                                @Valid @ModelAttribute("product") Product product,
+                                BindingResult result,
+                                @RequestParam(value = "categoryId", required = false) Long categoryId,
+                                Model model) {
         if (result.hasErrors()) {
             product.setId(id);
             model.addAttribute("categories", categoryService.getAllCategories());
             return "products/form";
         }
         product.setId(id);
+        if (categoryId != null) {
+            Category category = categoryService.getCategoryById(categoryId);
+            product.setCategory(category);
+        }
         productService.saveProduct(product);
         return "redirect:/products";
     }

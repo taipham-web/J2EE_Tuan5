@@ -3,6 +3,7 @@ package webbanhang.webbanhang.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import webbanhang.webbanhang.entity.Product;
+import webbanhang.webbanhang.entity.Category;
 import webbanhang.webbanhang.repository.ProductRepository;
 
 import java.util.List;
@@ -34,11 +35,7 @@ public class ProductService {
         return productRepository.findByNameContainingIgnoreCase(name);
     }
     
-    public List<Product> getProductsByBrand(String brand) {
-        return productRepository.findByBrand(brand);
-    }
-    
-    public List<Product> getProductsByCategory(String categoryName) {
-        return productRepository.findByCategoryName(categoryName);
+    public List<Product> getProductsByCategory(Category category) {
+        return productRepository.findByCategory(category);
     }
 }

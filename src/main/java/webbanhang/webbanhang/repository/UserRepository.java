@@ -1,15 +1,5 @@
 package webbanhang.webbanhang.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import webbanhang.webbanhang.entity.User;
-
-import java.util.Optional;
-
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    
-    Optional<User> findByEmail(String email);
-    
-    boolean existsByEmail(String email);
+// Vô hiệu hóa - bảng users không tồn tại trong DB
+public class UserRepository {
 }

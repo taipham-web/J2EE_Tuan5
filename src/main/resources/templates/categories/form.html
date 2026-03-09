@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title
-      th:text="${product.id != null ? 'Chỉnh sửa sản phẩm - ShopPro' : 'Thêm sản phẩm mới - ShopPro'}"
+      th:text="${category.id != null ? 'Chỉnh sửa danh mục - ShopPro' : 'Thêm danh mục mới - ShopPro'}"
     >
-      Form sản phẩm
+      Form danh mục
     </title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -42,19 +42,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/}">
-                <i class="fas fa-home me-1"></i> Trang chủ
-              </a>
+              <a class="nav-link" th:href="@{/}"
+                ><i class="fas fa-home me-1"></i> Trang chủ</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link active" th:href="@{/products}">
-                <i class="fas fa-box me-1"></i> Sản phẩm
-              </a>
+              <a class="nav-link" th:href="@{/products}"
+                ><i class="fas fa-box me-1"></i> Sản phẩm</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/categories}">
-                <i class="fas fa-layer-group me-1"></i> Danh mục
-              </a>
+              <a class="nav-link active" th:href="@{/categories}"
+                ><i class="fas fa-layer-group me-1"></i> Danh mục</a
+              >
             </li>
           </ul>
         </div>
@@ -68,53 +68,52 @@
           <ol class="breadcrumb breadcrumb-premium">
             <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
             <li class="breadcrumb-item">
-              <a th:href="@{/products}">Sản phẩm</a>
+              <a th:href="@{/categories}">Danh mục</a>
             </li>
             <li
               class="breadcrumb-item active"
-              th:text="${product.id != null ? 'Chỉnh sửa' : 'Thêm mới'}"
+              th:text="${category.id != null ? 'Chỉnh sửa' : 'Thêm mới'}"
             >
               Form
             </li>
           </ol>
         </nav>
 
-        <div class="row justify-content-center animate-fade-in-up">
-          <div class="col-md-8 col-lg-7">
-            <div class="form-premium">
+        <div class="row justify-content-center">
+          <div class="col-md-6 col-lg-5">
+            <div class="form-premium animate-fade-in-up">
               <div class="form-header">
                 <h4>
                   <i
-                    th:class="${product.id != null ? 'fas fa-pen-to-square' : 'fas fa-plus-circle'}"
+                    th:class="${category.id != null ? 'fas fa-pen-to-square' : 'fas fa-plus-circle'}"
                   ></i>
                   <span
-                    th:text="${product.id != null ? 'Chỉnh sửa sản phẩm' : 'Thêm sản phẩm mới'}"
+                    th:text="${category.id != null ? 'Chỉnh sửa danh mục' : 'Thêm danh mục mới'}"
                     >Form</span
                   >
                 </h4>
               </div>
               <div class="form-body">
                 <form
-                  th:action="${product.id != null ? '/products/update/' + product.id : '/products'}"
-                  th:object="${product}"
+                  th:action="${category.id != null ? '/categories/update/' + category.id : '/categories'}"
+                  th:object="${category}"
                   method="post"
                   novalidate
                 >
-                  <div class="mb-3">
+                  <div class="mb-4">
                     <label class="form-label">
                       <i
-                        class="fas fa-cube me-1"
+                        class="fas fa-tag me-1"
                         style="color: var(--primary-400)"
                       ></i>
-                      Tên sản phẩm <span class="text-danger">*</span>
+                      Tên danh mục <span class="text-danger">*</span>
                     </label>
                     <input
                       type="text"
                       class="form-control"
                       th:field="*{name}"
                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
-                      placeholder="Nhập tên sản phẩm"
-                      id="input-name"
+                      placeholder="Nhập tên danh mục"
                     />
                     <div
                       class="invalid-feedback"
@@ -125,90 +124,20 @@
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label class="form-label">
-                        <i
-                          class="fas fa-coins me-1"
-                          style="color: var(--amber-500)"
-                        ></i>
-                        Giá (VNĐ) <span class="text-danger">*</span>
-                      </label>
-                      <input
-                        type="number"
-                        class="form-control"
-                        th:field="*{price}"
-                        th:classappend="${#fields.hasErrors('price')} ? 'is-invalid' : ''"
-                        min="1"
-                        max="9999999"
-                        placeholder="0"
-                        id="input-price"
-                      />
-                      <div
-                        class="invalid-feedback"
-                        th:if="${#fields.hasErrors('price')}"
-                        th:errors="*{price}"
-                      >
-                        Lỗi giá
-                      </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                      <label class="form-label">
-                        <i
-                          class="fas fa-layer-group me-1"
-                          style="color: var(--primary-400)"
-                        ></i>
-                        Danh mục
-                      </label>
-                      <select
-                        class="form-control form-select"
-                        name="categoryId"
-                        id="input-category"
-                      >
-                        <option value="">-- Chọn danh mục --</option>
-                        <option
-                          th:each="cat : ${categories}"
-                          th:value="${cat.id}"
-                          th:text="${cat.name}"
-                          th:selected="${product.category != null && product.category.id == cat.id}"
-                        ></option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="mb-4">
-                    <label class="form-label">
-                      <i
-                        class="fas fa-image me-1"
-                        style="color: var(--rose-400)"
-                      ></i>
-                      Hình ảnh
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      th:field="*{image}"
-                      placeholder="Tên file hoặc URL hình ảnh"
-                      id="input-image"
-                    />
-                  </div>
-
                   <div class="divider"></div>
 
                   <div class="d-flex gap-2 justify-content-end">
                     <a
-                      th:href="@{/products}"
+                      th:href="@{/categories}"
                       class="btn-premium btn-outline-premium"
-                      id="btn-cancel"
                     >
                       <i class="fas fa-xmark"></i> Hủy
                     </a>
                     <button
                       type="submit"
                       class="btn-premium btn-primary-premium"
-                      id="btn-save"
                     >
-                      <i class="fas fa-floppy-disk"></i> Lưu sản phẩm
+                      <i class="fas fa-floppy-disk"></i> Lưu danh mục
                     </button>
                   </div>
                 </form>
@@ -234,7 +163,7 @@
           <ul class="footer-links">
             <li><a th:href="@{/}">Trang chủ</a></li>
             <li><a th:href="@{/products}">Sản phẩm</a></li>
-            <li><a th:href="@{/users}">Người dùng</a></li>
+            <li><a th:href="@{/categories}">Danh mục</a></li>
           </ul>
         </div>
       </div>
