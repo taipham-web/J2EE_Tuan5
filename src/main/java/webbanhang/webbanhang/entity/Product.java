@@ -32,6 +32,9 @@ public class Product {
     @DecimalMax(value = "9999999", inclusive = true, message = "Giá sản phẩm không được vượt quá 9,999,999")
     @Column(name = "price")
     private BigDecimal price;
+
+    @Transient
+    private Double discountPrice;
     
     @ManyToOne
     @JoinColumn(name = "category_id")
